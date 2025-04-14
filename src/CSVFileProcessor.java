@@ -1,6 +1,7 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Objects;
 
 public class CSVFileProcessor
 {
@@ -16,18 +17,35 @@ public class CSVFileProcessor
     public void printFileContents()
     {
         String line = "";
+        int binaryNum = 3;
 
         try {
             reader = new BufferedReader(new FileReader(file));
             while((line = reader.readLine()) != null){
 
                 String[] row = line.split(",");
+//                System.out.println("IsApproved: " + row[4]);
 
-                for(String index : row)
+                for (int i = 0; i < row.length; i++)
                 {
-                    System.out.printf("%-10s", index);
+                    if (Objects.equals(row[i], "Yes"))
+                    {
+                        binaryNum = 1;
+
+                    } else if (Objects.equals(row[i], "No"))
+                    {
+                        binaryNum = 0;
+                    }
+                    System.out.println("       " + binaryNum);
                 }
-                System.out.println();
+
+
+
+//                for(String index : row)
+//                {
+//                    System.out.printf("%-10s", index);
+//                }
+//                System.out.println();
 
             }
         }
