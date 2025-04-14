@@ -7,7 +7,7 @@ public class Main {
     {
 
         CSVFileProcessor fileProcess = new CSVFileProcessor();
-        fileProcess.printFileContents();
+        fileProcess.convertCSVToBinary();
 
     }
 }
