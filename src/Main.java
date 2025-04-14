@@ -7,7 +7,9 @@ public class Main {
     {
 
         CSVFileProcessor fileProcess = new CSVFileProcessor();
-        fileProcess.convertCSVToBinary();
+        fileProcess.buildCSVList();
+        fileProcess.printCSVList();
+        fileProcess.getDataset();
 
     }
 }

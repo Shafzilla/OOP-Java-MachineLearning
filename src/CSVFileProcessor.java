@@ -1,6 +1,7 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -9,9 +10,9 @@ public class CSVFileProcessor
 {
     private String file;
     private BufferedReader reader;
-
+    private ArrayList<Map<String, String>> listCSV;
+    private String[] featureValues = {"HasGoodCredit", "HasStableJob", "HasDebt", "HasCollateral", "ApplicationIsAccepted"};
     private Map<String, String> rowMap;
-
 
     public CSVFileProcessor()
     {
@@ -19,52 +20,61 @@ public class CSVFileProcessor
 
     }
 
-    public void convertCSVToBinary()
+    public void buildCSVList()
     {
-        rowMap = new HashMap<>();
+        listCSV = new ArrayList<>();
+        rowMap= new HashMap<>();
         String line = "";
-        int[] binaryNum = new int[5];
-
-        try {
+        try
+        {
             reader = new BufferedReader(new FileReader(file));
-            while((line = reader.readLine()) != null){
+            while((line = reader.readLine()) != null)
+            {
 
                 String[] row = line.split(",");
 //                System.out.println("IsApproved: " + row[4]);
-                rowMap.put("HasGoodCredit", row[0]);
-                rowMap.put("HasStableJob", row[1]);
-                rowMap.put("HasDebt", row[2]);
-                rowMap.put("HasColateral", row[3]);
-                rowMap.put("ApplicationIsAccepted", row[4]);
+                for (int i = 0; i < 5; i++)
+                {
+                    rowMap.put(featureValues[i], row[i]);
+                    System.out.println(featureValues[i] + ": " + rowMap.get(featureValues[i]));
+                }
 
-                System.out.println("HasGoodCredit: " + rowMap.get("HasGoodCredit"));
-                System.out.println("HasStableJob: " + rowMap.get("HasStableJob"));
-                System.out.println("HasDebt: " + rowMap.get("HasDebt"));
-                System.out.println("HasColateral: " + rowMap.get("HasColateral"));
-                System.out.println("ApplicationIsAccepted: " + rowMap.get("ApplicationIsAccepted"));
-
-//                for(String index : row)
-//                {
-//                    System.out.printf("%-10s", index);
-//                }
-//                System.out.println();
+                listCSV.add(rowMap);
 
             }
         }
-        catch(Exception e){
+        catch(Exception e)
+        {
             e.printStackTrace();
 
         }
-        finally {
-            try {
+        finally
+        {
+            try
+            {
                 reader.close();
             }
-            catch (IOException e) {
+            catch (IOException e)
+            {
                 e.printStackTrace();
             }
 
         }
 
+    }
+
+    public void printCSVList()
+    {
+        System.out.println(listCSV.get(6).get("HasDebt"));
+        for(int i = 0; i < listCSV.size(); i++)
+        {
+            for (int j = 0; j < featureValues.length; i++)
+            {
+                System.out.println(listCSV.get(i).get(featureValues[j]));
+            }
+
+
+        }
     }
 
     public void printFileContents()
@@ -121,6 +131,10 @@ public class CSVFileProcessor
             }
 
         }
+    }
+
+    public ArrayList<Map<String, String>> getDataset() {
+        return listCSV;
     }
 
 }
