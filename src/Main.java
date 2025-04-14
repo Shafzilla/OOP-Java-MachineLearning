@@ -9,7 +9,7 @@ public class Main {
         CSVFileProcessor fileProcess = new CSVFileProcessor();
         fileProcess.buildCSVList();
         fileProcess.printCSVList();
-        fileProcess.getDataset();
+
 
     }
 }

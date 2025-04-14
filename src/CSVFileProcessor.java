@@ -12,7 +12,7 @@ public class CSVFileProcessor
     private BufferedReader reader;
     private ArrayList<Map<String, String>> listCSV;
     private String[] featureValues = {"HasGoodCredit", "HasStableJob", "HasDebt", "HasCollateral", "ApplicationIsAccepted"};
-    private Map<String, String> rowMap;
+
 
     public CSVFileProcessor()
     {
@@ -23,16 +23,16 @@ public class CSVFileProcessor
     public void buildCSVList()
     {
         listCSV = new ArrayList<>();
-        rowMap= new HashMap<>();
+
         String line = "";
         try
         {
             reader = new BufferedReader(new FileReader(file));
             while((line = reader.readLine()) != null)
             {
+                Map<String, String> rowMap= new HashMap<>();
 
                 String[] row = line.split(",");
-//                System.out.println("IsApproved: " + row[4]);
                 for (int i = 0; i < 5; i++)
                 {
                     rowMap.put(featureValues[i], row[i]);
@@ -65,12 +65,13 @@ public class CSVFileProcessor
 
     public void printCSVList()
     {
-        System.out.println(listCSV.get(6).get("HasDebt"));
-        for(int i = 0; i < listCSV.size(); i++)
+
+        for(int i = 0; i <= ((listCSV.size())-1); i++)
         {
-            for (int j = 0; j < featureValues.length; i++)
+            System.out.println("\n");
+            for (int j = 0; j <= ((featureValues.length) - 1); j++)
             {
-                System.out.println(listCSV.get(i).get(featureValues[j]));
+                System.out.printf("%20s",listCSV.get(i).get(featureValues[j]));
             }
 
 
