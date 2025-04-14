@@ -17,7 +17,7 @@ public class CSVFileProcessor
     public void printFileContents()
     {
         String line = "";
-        int binaryNum = 3;
+        int[] binaryNum = new int[5];
 
         try {
             reader = new BufferedReader(new FileReader(file));
@@ -30,14 +30,19 @@ public class CSVFileProcessor
                 {
                     if (Objects.equals(row[i], "Yes"))
                     {
-                        binaryNum = 1;
+                        binaryNum[i] = 1;
 
                     } else if (Objects.equals(row[i], "No"))
                     {
-                        binaryNum = 0;
+                        binaryNum[i] = 0;
                     }
-                    System.out.println("       " + binaryNum);
+
                 }
+                System.out.print("The CSV Binary: [ ");
+                for(int i = 0; i< binaryNum.length; i++) {
+                    System.out.print(" " + binaryNum[i] + " ");
+                }
+                System.out.println("]");
 
 
 
