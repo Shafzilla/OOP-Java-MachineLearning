@@ -29,6 +29,24 @@ public class CSVFileProcessor
             {"No", "No", "Yes", "No"},
             {"No", "No", "No", "Yes"},
             {"No", "No", "No", "No"}
+            };
+    private int[][] frequencyOutcomes = {
+            {0,0},
+            {0,0},
+            {0,0},
+            {0,0},
+            {0,0},
+            {0,0},
+            {0,0},
+            {0,0},
+            {0,0},
+            {0,0},
+            {0,0},
+            {0,0},
+            {0,0},
+            {0,0},
+            {0,0},
+            {0,0},
 };
 
 
@@ -61,27 +79,32 @@ public class CSVFileProcessor
                     rowScanList[i] = row[i];
                 }
                 Boolean found = false;
+                int i = 0;
                 for (String[] tempRowScan : freqencyTable)
                 {
-                    System.out.println("entering for loop gfggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg");
+
                     if (Objects.equals(tempRowScan[0], rowScanList[0]) && Objects.equals(tempRowScan[1], rowScanList[1]) && Objects.equals(tempRowScan[2], rowScanList[2]) && Objects.equals(tempRowScan[3], rowScanList[3]))
                     {
-                        System.out.println("Accessed theebbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb");
+
                         if(Objects.equals(rowScanList[4], "Yes"))
                         {
                             yesNum = yesNum + 1;
+                            frequencyOutcomes[i][0] = frequencyOutcomes[i][0] + 1;
                         } else if (Objects.equals(rowScanList[4], "No"))
                         {
                             noNum = noNum + 1;
+                            frequencyOutcomes[i][1] = frequencyOutcomes[i][1] + 1;
                         }
                         break;
                     }
+                    i = i+1;
                 }
+
 
                 listCSV.add(rowMap);
 
             }
-            System.out.println("Number of Yeses" + yesNum + "Number of Nos" + noNum);
+            System.out.println("Number of Yeses: " + yesNum + "Number of Nos: " + noNum);
         }
         catch(Exception e)
         {
@@ -101,6 +124,14 @@ public class CSVFileProcessor
 
         }
 
+    }
+
+    public void printFrequencyTable()
+    {
+        for(int[] row : frequencyOutcomes)
+        {
+            System.out.println("Yes: " + row[0] + " No: " + row[1]);
+        }
     }
 
     public void printCSVList()
