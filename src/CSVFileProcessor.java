@@ -42,7 +42,9 @@ public class CSVFileProcessor
     {
 
         listCSV = new ArrayList<>();
-
+        int[] freqNums;
+        int yesNum = 0;
+        int noNum = 0;
         String line = "";
         try
         {
@@ -50,17 +52,36 @@ public class CSVFileProcessor
             while((line = reader.readLine()) != null)
             {
                 Map<String, String> rowMap= new HashMap<>();
-
+                String[] rowScanList = new String[5];
                 String[] row = line.split(",");
                 for (int i = 0; i < 5; i++)
                 {
                     rowMap.put(featureValues[i], row[i]);
                     System.out.println(featureValues[i] + ": " + rowMap.get(featureValues[i]));
+                    rowScanList[i] = row[i];
+                }
+                Boolean found = false;
+                for (String[] tempRowScan : freqencyTable)
+                {
+                    System.out.println("entering for loop gfggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg");
+                    if (Objects.equals(tempRowScan[0], rowScanList[0]) && Objects.equals(tempRowScan[1], rowScanList[1]) && Objects.equals(tempRowScan[2], rowScanList[2]) && Objects.equals(tempRowScan[3], rowScanList[3]))
+                    {
+                        System.out.println("Accessed theebbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb");
+                        if(Objects.equals(rowScanList[4], "Yes"))
+                        {
+                            yesNum = yesNum + 1;
+                        } else if (Objects.equals(rowScanList[4], "No"))
+                        {
+                            noNum = noNum + 1;
+                        }
+                        break;
+                    }
                 }
 
                 listCSV.add(rowMap);
 
             }
+            System.out.println("Number of Yeses" + yesNum + "Number of Nos" + noNum);
         }
         catch(Exception e)
         {
