@@ -12,6 +12,24 @@ public class CSVFileProcessor
     private BufferedReader reader;
     private ArrayList<Map<String, String>> listCSV;
     private String[] featureValues = {"HasGoodCredit", "HasStableJob", "HasDebt", "HasCollateral", "ApplicationIsAccepted"};
+    private String[][] freqencyTable = {
+            {"Yes", "Yes", "Yes", "Yes"},
+            {"Yes", "Yes", "Yes", "No"},
+            {"Yes", "Yes", "No", "Yes",},
+            {"Yes", "Yes", "No", "No"},
+            {"Yes", "No", "Yes", "Yes"},
+            {"Yes", "No", "Yes", "No"},
+            {"Yes", "No", "No", "Yes"},
+            {"Yes", "No", "No", "No"},
+            {"No", "Yes", "Yes", "Yes"},
+            {"No", "Yes", "Yes", "No"},
+            {"No", "Yes", "No", "Yes"},
+            {"No", "Yes", "No", "No"},
+            {"No", "No", "Yes", "Yes"},
+            {"No", "No", "Yes", "No"},
+            {"No", "No", "No", "Yes"},
+            {"No", "No", "No", "No"}
+};
 
 
     public CSVFileProcessor()
@@ -22,6 +40,7 @@ public class CSVFileProcessor
 
     public void buildCSVList()
     {
+
         listCSV = new ArrayList<>();
 
         String line = "";
@@ -71,12 +90,25 @@ public class CSVFileProcessor
             System.out.println("\n");
             for (int j = 0; j <= ((featureValues.length) - 1); j++)
             {
-                System.out.printf("%20s",listCSV.get(i).get(featureValues[j]));
+                // printing row and column
+                System.out.printf("%25s",listCSV.get(i).get(featureValues[j]));
             }
 
 
         }
     }
+
+    public void trainOnData()
+    {
+        String[] rowScan = new String[0];
+        for(Map<String, String> row : listCSV)
+        {
+            int i = 0;
+            rowScan[i] = row.get(featureValues[i]);
+
+        }
+    }
+
 
     public void printFileContents()
     {
@@ -134,8 +166,6 @@ public class CSVFileProcessor
         }
     }
 
-    public ArrayList<Map<String, String>> getDataset() {
-        return listCSV;
-    }
+
 
 }
