@@ -77,9 +77,11 @@ public class GUI extends JFrame implements ActionListener {
 
         boolean found = false;
 
+        int permIndex = 0;
+
         for (String[] row : frequency_Table)
         {
-            int permIndex = 0;
+
             if (row[0] == credit && row[1] == job && row[2] == debt && row[3] == collateral)
             {
                 double acceptedPercentage = percentageClassifier[permIndex];
