@@ -11,7 +11,9 @@ public class CSVFileProcessor
     private String file;
     private BufferedReader reader;
     private ArrayList<Map<String, String>> listCSV;
-    private String[] featureValues = {"HasGoodCredit", "HasStableJob", "HasDebt", "HasCollateral", "ApplicationIsAccepted"};
+    private String[] featureValues = {
+            "HasGoodCredit", "HasStableJob", "HasDebt", "HasCollateral", "ApplicationIsAccepted"
+            };
     private String[][] freqencyTable = {
             {"Yes", "Yes", "Yes", "Yes"},
             {"Yes", "Yes", "Yes", "No"},
@@ -30,7 +32,7 @@ public class CSVFileProcessor
             {"No", "No", "No", "Yes"},
             {"No", "No", "No", "No"}
             };
-    private int[][] frequencyOutcomes = {
+    int[][] frequencyOutcomes = {
             {0,0},
             {0,0},
             {0,0},
@@ -75,7 +77,6 @@ public class CSVFileProcessor
                 for (int i = 0; i < 5; i++)
                 {
                     rowMap.put(featureValues[i], row[i]);
-                    System.out.println(featureValues[i] + ": " + rowMap.get(featureValues[i]));
                     rowScanList[i] = row[i];
                 }
                 Boolean found = false;
@@ -90,7 +91,8 @@ public class CSVFileProcessor
                         {
                             yesNum = yesNum + 1;
                             frequencyOutcomes[i][0] = frequencyOutcomes[i][0] + 1;
-                        } else if (Objects.equals(rowScanList[4], "No"))
+                        }
+                        else if (Objects.equals(rowScanList[4], "No"))
                         {
                             noNum = noNum + 1;
                             frequencyOutcomes[i][1] = frequencyOutcomes[i][1] + 1;

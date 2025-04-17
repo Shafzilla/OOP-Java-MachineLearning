@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -10,6 +11,15 @@ public class Main {
         fileProcess.buildCSVList();
         //fileProcess.printCSVList();
         fileProcess.printFrequencyTable();
+
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                GUI myScreen = new GUI("My gui");
+
+            }
+        });
+
 
 
 
