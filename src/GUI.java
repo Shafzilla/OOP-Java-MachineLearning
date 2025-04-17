@@ -32,12 +32,38 @@ public class GUI extends JFrame implements ActionListener {
         JButton predictionButton = new JButton("Predict");
         predictionButton.addActionListener(this);
 
+        add(new JLabel("Has Good Credit:"));
+        add(creditBox);
+        add(new JLabel("Has Stable Job"));
+        add(jobBox);
+        add(new JLabel("Has Debt"));
+        add(debtBox);
+        add(new JLabel("Has Collateral"));
+        add(collateralBox);
+        add(predictionButton);
+
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setVisible(true);
+
+
 
     }
 
 
     @Override
-    public void actionPerformed(ActionEvent e) {
+    public void actionPerformed(ActionEvent e)
+    {
+
+        String credit = (String) creditBox.getSelectedItem();
+        String job = (String) jobBox.getSelectedItem();
+        String debt = (String) debtBox.getSelectedItem();
+        String collateral = (String) collateralBox.getSelectedItem();
+
+        int creditIndex = credit.equals("Yes") ? 1 : 0;
+        int jobIndex = job.equals("Yes") ? 1 : 0;
+        int debtIndex = debt.equals("Yes") ? 1 : 0;
+        int collateralIndex = collateral.equals("Yes") ? 1 : 0;
+
 
     }
 }

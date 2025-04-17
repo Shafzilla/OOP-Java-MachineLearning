@@ -49,7 +49,27 @@ public class CSVFileProcessor
             {0,0},
             {0,0},
             {0,0},
-};
+            };
+
+    int[] permRules = {
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+    };
+
 
 
     public CSVFileProcessor()
@@ -218,6 +238,27 @@ public class CSVFileProcessor
             }
 
         }
+    }
+
+    public void generateRule()
+    {
+        for(int i = 0; i < permRules.length; i++)
+        {
+            int total = frequencyOutcomes[i][0] + frequencyOutcomes[i][1];
+
+            if (frequencyOutcomes[i][0] >= (total / 2))
+            {
+                permRules[i] = 1;
+            }
+            else
+            {
+                permRules[i] = 0;
+            }
+        }
+
+
+
+
     }
 
 
