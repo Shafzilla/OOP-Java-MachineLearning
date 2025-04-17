@@ -16,13 +16,27 @@ public class GUI extends JFrame implements ActionListener {
     private JComboBox<String> debtBox;
     private JComboBox<String> collateralBox;
 
+    private CSVFileProcessor trainer;
+
+    private double[] percentageClassifier;
+
+    private String[][] frequency_Table;
+
     public GUI(String title){
 
+
         super(title);
+
+        trainer = new CSVFileProcessor();
+        trainer.buildCSVList();
+        trainer.generateRule();
+        percentageClassifier = trainer.getPermRulesPercentage();
+        frequency_Table = trainer.getFreqencyTable();
+
         setSize(400, 300);
         setLayout(new FlowLayout());
 
-        String[] BinaryOptions = {"yes", "No"};
+        String[] BinaryOptions = {"Yes", "No"};
         creditBox = new JComboBox<>(BinaryOptions);
         jobBox = new JComboBox<>(BinaryOptions);
         debtBox = new JComboBox<>(BinaryOptions);
@@ -47,6 +61,8 @@ public class GUI extends JFrame implements ActionListener {
 
 
 
+
+
     }
 
 
@@ -59,11 +75,45 @@ public class GUI extends JFrame implements ActionListener {
         String debt = (String) debtBox.getSelectedItem();
         String collateral = (String) collateralBox.getSelectedItem();
 
-        int creditIndex = credit.equals("Yes") ? 1 : 0;
-        int jobIndex = job.equals("Yes") ? 1 : 0;
-        int debtIndex = debt.equals("Yes") ? 1 : 0;
-        int collateralIndex = collateral.equals("Yes") ? 1 : 0;
+        boolean found = false;
+
+        for (String[] row : frequency_Table)
+        {
+            int permIndex = 0;
+            if (row[0] == credit && row[1] == job && row[2] == debt && row[3] == collateral)
+            {
+                double acceptedPercentage = percentageClassifier[permIndex];
+
+                JOptionPane.showMessageDialog(this,
+                        "changes of load approval: " + String.format("%.2f", acceptedPercentage) + "%",
+                        "Prediction Result",
+                        JOptionPane.INFORMATION_MESSAGE
+                );
+
+                found = true;
+                break;
+
+            }
+            permIndex = permIndex + 1;
+        }
+        if(!found)
+        {
+            JOptionPane.showMessageDialog(this,
+                    "not found",
+                    "no match",
+                    JOptionPane.INFORMATION_MESSAGE
+            );
+        }
+
+        for(double element : percentageClassifier)
+        {
+            System.out.println(element);
+        }
 
 
     }
+
+
+
+
 }

@@ -51,7 +51,9 @@ public class CSVFileProcessor
             {0,0},
             };
 
-    int[] permRules = {
+
+
+    private double[] permRulesPercentage = {
             0,
             0,
             0,
@@ -242,18 +244,20 @@ public class CSVFileProcessor
 
     public void generateRule()
     {
-        for(int i = 0; i < permRules.length; i++)
+        for(int i = 0; i < permRulesPercentage.length; i++)
         {
-            int total = frequencyOutcomes[i][0] + frequencyOutcomes[i][1];
+            double total = frequencyOutcomes[i][0] + frequencyOutcomes[i][1];
+            double percentage = (frequencyOutcomes[i][0] / total) * 100;
+            permRulesPercentage[i] = percentage;
 
-            if (frequencyOutcomes[i][0] >= (total / 2))
-            {
-                permRules[i] = 1;
-            }
-            else
-            {
-                permRules[i] = 0;
-            }
+//            if (frequencyOutcomes[i][0] >= (total / 2))
+//            {
+//                permRulesPercentage[i] = 1;
+//            }
+//            else
+//            {
+//                permRulesPercentage[i] = 0;
+//            }
         }
 
 
@@ -261,6 +265,12 @@ public class CSVFileProcessor
 
     }
 
+    public double[] getPermRulesPercentage() {
+        return permRulesPercentage;
+    }
 
 
+    public String[][] getFreqencyTable() {
+        return freqencyTable;
+    }
 }

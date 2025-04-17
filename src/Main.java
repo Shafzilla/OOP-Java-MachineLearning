@@ -11,14 +11,10 @@ public class Main {
         fileProcess.buildCSVList();
         //fileProcess.printCSVList();
         fileProcess.printFrequencyTable();
+        fileProcess.generateRule();
 
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                GUI myScreen = new GUI("My gui");
 
-            }
-        });
+        GUI myScreen = new GUI("My gui");
 
 
 
