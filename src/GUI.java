@@ -2,14 +2,15 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Objects;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
 
-
-public class GUI extends JFrame implements ActionListener {
+public class GUI extends JFrame implements ActionListener
+{
 
     private JComboBox<String> creditBox;
     private JComboBox<String> jobBox;
@@ -20,18 +21,18 @@ public class GUI extends JFrame implements ActionListener {
 
     private double[] percentageClassifier;
 
-    private String[][] frequency_Table;
+    private String[][] frequencyTable;
 
-    public GUI(String title){
-
-
+    public GUI(String title)
+    {
         super(title);
 
-        trainer = new CSVFileProcessor();
+        trainer = new CSVFileProcessor("application_data.csv");
         trainer.buildCSVList();
         trainer.generateRule();
         percentageClassifier = trainer.getPermRulesPercentage();
-        frequency_Table = trainer.getFreqencyTable();
+        frequencyTable = trainer.getPermutationTable();
+        trainer.printFrequencyTable();
 
         setSize(400, 300);
         setLayout(new FlowLayout());
@@ -59,10 +60,6 @@ public class GUI extends JFrame implements ActionListener {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
 
-
-
-
-
     }
 
 
@@ -79,15 +76,16 @@ public class GUI extends JFrame implements ActionListener {
 
         int permIndex = 0;
 
-        for (String[] row : frequency_Table)
-        {
+        for (String[] row : frequencyTable)
+        { // start for loop
 
-            if (row[0] == credit && row[1] == job && row[2] == debt && row[3] == collateral)
-            {
+            if (Objects.equals(row[0], credit) && Objects.equals(row[1], job) && Objects.equals(row[2], debt)
+                    && Objects.equals(row[3], collateral))
+            { // start if
                 double acceptedPercentage = percentageClassifier[permIndex];
 
                 JOptionPane.showMessageDialog(this,
-                        "changes of load approval: " + String.format("%.2f", acceptedPercentage) + "%",
+                        "chances of loan approval: " + String.format("%.2f", acceptedPercentage) + "%",
                         "Prediction Result",
                         JOptionPane.INFORMATION_MESSAGE
                 );
@@ -95,17 +93,19 @@ public class GUI extends JFrame implements ActionListener {
                 found = true;
                 break;
 
-            }
+            } // end if
             permIndex = permIndex + 1;
-        }
+
+        } // end for loop
+
         if(!found)
-        {
+        { // start if
             JOptionPane.showMessageDialog(this,
                     "not found",
                     "no match",
                     JOptionPane.INFORMATION_MESSAGE
             );
-        }
+        } // end if
 
         for(double element : percentageClassifier)
         {

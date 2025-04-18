@@ -11,10 +11,19 @@ public class CSVFileProcessor
     private String file;
     private BufferedReader reader;
     private ArrayList<Map<String, String>> listCSV;
-    private String[] featureValues = {
-            "HasGoodCredit", "HasStableJob", "HasDebt", "HasCollateral", "ApplicationIsAccepted"
+    // An Array of the feature labels
+    private final String[] featureValues =
+            {
+            "HasGoodCredit",
+            "HasStableJob",
+            "HasDebt",
+            "HasCollateral",
+            "ApplicationIsAccepted"
             };
-    private String[][] freqencyTable = {
+
+    // A table of all possible permutations
+    private final  String[][] permutationTable =
+            {
             {"Yes", "Yes", "Yes", "Yes"},
             {"Yes", "Yes", "Yes", "No"},
             {"Yes", "Yes", "No", "Yes",},
@@ -32,7 +41,10 @@ public class CSVFileProcessor
             {"No", "No", "No", "Yes"},
             {"No", "No", "No", "No"}
             };
-    int[][] frequencyOutcomes = {
+
+    // A 2-D array for frequency of "yes" and "no" occurrences per permutation {(number of "Yes"s), (number of "No"s)}
+    private int[][] frequencyOutcomes =
+            {
             {0,0},
             {0,0},
             {0,0},
@@ -52,8 +64,9 @@ public class CSVFileProcessor
             };
 
 
-
-    private double[] permRulesPercentage = {
+    // An array to store the chance of a loan being accepted as a percentage, per permutation
+    private final double[] permRulesPercentage =
+            {
             0,
             0,
             0,
@@ -74,17 +87,21 @@ public class CSVFileProcessor
 
 
 
-    public CSVFileProcessor()
+    public CSVFileProcessor(String file)
     {
-        file = "application_data.csv";
+        setFile(file);
 
+    }
+
+    public void setFile(String file)
+    {
+        this.file = file;
     }
 
     public void buildCSVList()
     {
 
         listCSV = new ArrayList<>();
-        int[] freqNums;
         int yesNum = 0;
         int noNum = 0;
         String line = "";
@@ -93,31 +110,34 @@ public class CSVFileProcessor
             reader = new BufferedReader(new FileReader(file));
             while((line = reader.readLine()) != null)
             {
-                Map<String, String> rowMap= new HashMap<>();
-                String[] rowScanList = new String[5];
-                String[] row = line.split(",");
-                for (int i = 0; i < 5; i++)
+                Map<String, String> rowMap= new HashMap<>(); // New map is made everytime for storing new row
+                String[] rowScanList = new String[5]; // array to temporarily store feature values for operations
+                String[] row = line.split(","); // array to store feature values temporarily
+                for (int i = 0; i < 5; i++) // loop to insert values for columns into each row
                 {
                     rowMap.put(featureValues[i], row[i]);
                     rowScanList[i] = row[i];
                 }
                 Boolean found = false;
-                int i = 0;
-                for (String[] tempRowScan : freqencyTable)
+                int i = 0; // to track index of the permutation table
+                for (String[] permutationMatcher : permutationTable)
                 {
 
-                    if (Objects.equals(tempRowScan[0], rowScanList[0]) && Objects.equals(tempRowScan[1], rowScanList[1]) && Objects.equals(tempRowScan[2], rowScanList[2]) && Objects.equals(tempRowScan[3], rowScanList[3]))
+                    if (Objects.equals(permutationMatcher[0], rowScanList[0])
+                            && Objects.equals(permutationMatcher[1], rowScanList[1])
+                            && Objects.equals(permutationMatcher[2], rowScanList[2])
+                            && Objects.equals(permutationMatcher[3], rowScanList[3])) // if the scanned row matches the permutation
                     {
 
                         if(Objects.equals(rowScanList[4], "Yes"))
                         {
                             yesNum = yesNum + 1;
-                            frequencyOutcomes[i][0] = frequencyOutcomes[i][0] + 1;
+                            frequencyOutcomes[i][0] = frequencyOutcomes[i][0] + 1; // to increment "Yes"s per permutation
                         }
                         else if (Objects.equals(rowScanList[4], "No"))
                         {
                             noNum = noNum + 1;
-                            frequencyOutcomes[i][1] = frequencyOutcomes[i][1] + 1;
+                            frequencyOutcomes[i][1] = frequencyOutcomes[i][1] + 1; // to increment "No"s per permutation
                         }
                         break;
                     }
@@ -125,10 +145,10 @@ public class CSVFileProcessor
                 }
 
 
-                listCSV.add(rowMap);
+                listCSV.add(rowMap); // add row to the list
 
             }
-            System.out.println("Number of Yeses: " + yesNum + "Number of Nos: " + noNum);
+            //System.out.println("Number of Yeses: " + yesNum + "Number of Nos: " + noNum);
         }
         catch(Exception e)
         {
@@ -150,42 +170,46 @@ public class CSVFileProcessor
 
     }
 
+    // method to print frequency table
     public void printFrequencyTable()
     {
-        for(int[] row : frequencyOutcomes)
+        try
         {
-            System.out.println("Yes: " + row[0] + " No: " + row[1]);
+            for (int[] row : frequencyOutcomes)
+            {
+                System.out.println("Yes: " + row[0] + " No: " + row[1]);
+            }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
         }
     }
 
+    // method to print the dataset in a table
     public void printCSVList()
     {
-
-        for(int i = 0; i <= ((listCSV.size())-1); i++)
+        try
         {
-            System.out.println("\n");
-            for (int j = 0; j <= ((featureValues.length) - 1); j++)
+
+            for (int i = 0; i <= ((listCSV.size()) - 1); i++)
             {
-                // printing row and column
-                System.out.printf("%25s",listCSV.get(i).get(featureValues[j]));
+                System.out.println("\n");
+                for (int j = 0; j <= ((featureValues.length) - 1); j++)
+                {
+                    // printing row and column
+                    System.out.printf("%25s", listCSV.get(i).get(featureValues[j]));
+                }
+
             }
-
-
         }
-    }
-
-    public void trainOnData()
-    {
-        String[] rowScan = new String[0];
-        for(Map<String, String> row : listCSV)
+        catch (Exception e)
         {
-            int i = 0;
-            rowScan[i] = row.get(featureValues[i]);
-
+            e.printStackTrace();
         }
     }
 
-
+    // method to print the contents straight from the CSV file in binary form
     public void printFileContents()
     {
 
@@ -242,35 +266,42 @@ public class CSVFileProcessor
         }
     }
 
+    // method to generate the chance of an application being accepted as a percentage
     public void generateRule()
     {
-        for(int i = 0; i < permRulesPercentage.length; i++)
+        try
         {
-            double total = frequencyOutcomes[i][0] + frequencyOutcomes[i][1];
-            double percentage = (frequencyOutcomes[i][0] / total) * 100;
-            permRulesPercentage[i] = percentage;
+            for (int i = 0; i < permRulesPercentage.length; i++)
+            {
+                double total = frequencyOutcomes[i][0] + frequencyOutcomes[i][1]; // get total ("Yes"s + "No"s)
+                double percentage = (frequencyOutcomes[i][0] / total) * 100; // get percentages of "Yes"s
+                permRulesPercentage[i] = percentage;
 
-//            if (frequencyOutcomes[i][0] >= (total / 2))
-//            {
-//                permRulesPercentage[i] = 1;
-//            }
-//            else
-//            {
-//                permRulesPercentage[i] = 0;
-//            }
+                //            if (frequencyOutcomes[i][0] >= (total / 2))
+                //            {
+                //                permRulesPercentage[i] = 1;
+                //            }
+                //            else
+                //            {
+                //                permRulesPercentage[i] = 0;
+                //            }
+            }
         }
-
-
-
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
 
     }
 
-    public double[] getPermRulesPercentage() {
+    public double[] getPermRulesPercentage()
+    {
         return permRulesPercentage;
     }
 
 
-    public String[][] getFreqencyTable() {
-        return freqencyTable;
+    public String[][] getPermutationTable()
+    {
+        return permutationTable;
     }
 }
