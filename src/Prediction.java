@@ -54,6 +54,26 @@ public class Prediction
                     0
             };
 
+    private String[] acceptedLikelyHood =
+            {
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    ""
+            };
+
 
     public Prediction(String file)
     {
@@ -63,44 +83,40 @@ public class Prediction
         setFeatureValues(fileProcessor.getFeatureValues());
         generateFrequencyTable();
         generateRule();
+        calculateAcceptedLikelyhood();
 
     }
 
     public void generateFrequencyTable()
     {
-        for(int i = 0; i < data.size(); i++)
-        {
-
-            Map<String, String> row = data.get(i);
+        if(this.data == null){
+            System.out.println("Data is null: ");
+        }
+        for (Map<String, String> row : data) {
 
             String[] rowScanList = new String[5];
 
-            for (int j = 0; j < featureValues.length; j++)
-            {
+            for (int j = 0; j < featureValues.length; j++) {
                 rowScanList[j] = row.get(featureValues[j]);
             }
 
             int k = 0;
-            for (String[] permutationMatcher : permutationTable)
-            {
+            for (String[] permutationMatcher : permutationTable) {
 
                 if (Objects.equals(permutationMatcher[0], rowScanList[0])
                         && Objects.equals(permutationMatcher[1], rowScanList[1])
                         && Objects.equals(permutationMatcher[2], rowScanList[2])
-                        && Objects.equals(permutationMatcher[3], rowScanList[3]))
-                {
-                    if (Objects.equals(rowScanList[4], "Yes"))
-                    {
+                        && Objects.equals(permutationMatcher[3], rowScanList[3])) {
+                    if (Objects.equals(rowScanList[4], "Yes")) {
                         frequencyOutcomes[k][0] = frequencyOutcomes[k][0] + 1; // to increment "Yes"s per permutation
-                    } else if (Objects.equals(rowScanList[4], "No"))
-                    {
+                    } else if (Objects.equals(rowScanList[4], "No")) {
                         frequencyOutcomes[k][1] = frequencyOutcomes[k][1] + 1; // to increment "No"s per permutation
                     }
                     break;
 
                 }
 
-                k = k+1;
+                k = k + 1;
 
             }
         }
@@ -147,6 +163,22 @@ public class Prediction
             }
 
             System.out.println(rowScanList[0] + " " + rowScanList[1] + " " + rowScanList[2] + " " + rowScanList[3] + " " + rowScanList[4]);
+
+        }
+    }
+
+    public void calculateAcceptedLikelyhood()
+    {
+        for(int i = 0; i < permRulesPercentage.length; i++)
+        {
+            if(permRulesPercentage[i] >= 50)
+            {
+                acceptedLikelyHood[i] = "Yes";
+            }
+            else
+            {
+                acceptedLikelyHood[i] = "No";
+            }
 
         }
     }
@@ -203,5 +235,8 @@ public class Prediction
         return frequencyOutcomes[row][col];
     }
 
-
+    public String[] getAcceptedLikelyHood()
+    {
+        return acceptedLikelyHood;
+    }
 }
