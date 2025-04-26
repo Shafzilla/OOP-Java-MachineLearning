@@ -15,6 +15,7 @@ import javax.swing.JLabel;
 
 public class GUI extends JFrame implements ActionListener
 {
+    private String file;
 
     private JComboBox<String> creditBox;
     private JComboBox<String> jobBox;
@@ -37,11 +38,14 @@ public class GUI extends JFrame implements ActionListener
     {
         super(title);
 
-        trainer = new CSVFileProcessor("application_data.csv");
+        file = "application_data.csv";
+
+        trainer = new CSVFileProcessor(file);
 
 
         setSize(800, 600);
         setLayout(new FlowLayout());
+
 
 
 
@@ -230,12 +234,11 @@ public class GUI extends JFrame implements ActionListener
     {
         try
         {
-            trainer.buildCSVList();
-            trainer.generateRule();
-            Evaluate evaluation = new Evaluate();
+            Prediction prediction = new Prediction(file);
+            Evaluate evaluation = new Evaluate(file);
             evaluation.evaluateAccuracy();
             double accuracy = evaluation.getTestAccuracy();
-            percentageClassifier = trainer.getPermRulesPercentage();
+            percentageClassifier = prediction.getPermRulesPercentage();
             frequencyTable = trainer.getPermutationTable();
             trained = true;
 
@@ -268,7 +271,7 @@ public class GUI extends JFrame implements ActionListener
 
     public void save(String credit, String job, String debt, String collateral, String accepted)
     {
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter("application_data.csv", true)))
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(file, true)))
         {
             String enteredData = String.format("%s,%s,%s,%s,%s\n", credit, job, debt, collateral, accepted);
             bw.write(enteredData);

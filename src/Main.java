@@ -11,11 +11,13 @@ public class Main {
 //        fileProcess.buildCSVList();
 //        Evaluate evaluation = new Evaluate();
 //        evaluation.printData();
+        Prediction prediction = new Prediction("application_data.csv");
+        prediction.printFreqTable();
 
 
 
 
-        GUI myScreen = new GUI("My gui");
+        //GUI myScreen = new GUI("My gui");
 
 
 

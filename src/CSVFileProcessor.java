@@ -42,53 +42,10 @@ public class CSVFileProcessor
             {"No", "No", "No", "No"}
             };
 
-    // A 2-D array for frequency of "yes" and "no" occurrences per permutation {(number of "Yes"s), (number of "No"s)}
-    private int[][] frequencyOutcomes =
-            {
-            {0,0},
-            {0,0},
-            {0,0},
-            {0,0},
-            {0,0},
-            {0,0},
-            {0,0},
-            {0,0},
-            {0,0},
-            {0,0},
-            {0,0},
-            {0,0},
-            {0,0},
-            {0,0},
-            {0,0},
-            {0,0},
-            };
-
-
-    // An array to store the chance of a loan being accepted as a percentage, per permutation
-    private final double[] permRulesPercentage =
-            {
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0
-    };
-
     public CSVFileProcessor(String file)
     {
         setFile(file);
-
+        buildCSVList();
     }
 
     public void setFile(String file)
@@ -116,32 +73,8 @@ public class CSVFileProcessor
                     rowMap.put(featureValues[i], row[i]);
                     rowScanList[i] = row[i];
                 }
+
                 Boolean found = false;
-                int i = 0; // to track index of the permutation table
-                for (String[] permutationMatcher : permutationTable)
-                {
-
-                    if (Objects.equals(permutationMatcher[0], rowScanList[0])
-                            && Objects.equals(permutationMatcher[1], rowScanList[1])
-                            && Objects.equals(permutationMatcher[2], rowScanList[2])
-                            && Objects.equals(permutationMatcher[3], rowScanList[3])) // if the scanned row matches the permutation
-                    {
-
-                        if(Objects.equals(rowScanList[4], "Yes"))
-                        {
-                            yesNum = yesNum + 1;
-                            frequencyOutcomes[i][0] = frequencyOutcomes[i][0] + 1; // to increment "Yes"s per permutation
-                        }
-                        else if (Objects.equals(rowScanList[4], "No"))
-                        {
-                            noNum = noNum + 1;
-                            frequencyOutcomes[i][1] = frequencyOutcomes[i][1] + 1; // to increment "No"s per permutation
-                        }
-                        break;
-                    }
-                    i = i+1;
-                }
-
 
                 listCSV.add(rowMap); // add row to the list
 
@@ -166,22 +99,6 @@ public class CSVFileProcessor
 
         }
 
-    }
-
-    // method to print frequency table
-    public void printFrequencyTable()
-    {
-        try
-        {
-            for (int[] row : frequencyOutcomes)
-            {
-                System.out.println("Yes: " + row[0] + " No: " + row[1]);
-            }
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
     }
 
     // method to print the dataset in a table
@@ -210,13 +127,13 @@ public class CSVFileProcessor
     // method to print the contents straight from the CSV file in binary form
     public void printFileContents()
     {
-
         String line = "";
         int[] binaryNum = new int[5];
 
         try {
             reader = new BufferedReader(new FileReader(file));
-            while((line = reader.readLine()) != null){
+            while((line = reader.readLine()) != null)
+            {
 
                 String[] row = line.split(",");
 //                System.out.println("IsApproved: " + row[4]);
@@ -234,62 +151,29 @@ public class CSVFileProcessor
 
                 }
                 System.out.print("The CSV Binary: [ ");
-                for(int i = 0; i< binaryNum.length; i++) {
+                for(int i = 0; i< binaryNum.length; i++)
+                {
                     System.out.print(" " + binaryNum[i] + " ");
                 }
                 System.out.println("]");
-
-
-
-//                for(String index : row)
-//                {
-//                    System.out.printf("%-10s", index);
-//                }
-//                System.out.println();
-
             }
         }
-        catch(Exception e){
+        catch(Exception e)
+        {
             e.printStackTrace();
-
         }
-        finally {
-            try {
+        finally
+        {
+            try
+            {
                 reader.close();
             }
-            catch (IOException e) {
+            catch (IOException e)
+            {
                 e.printStackTrace();
             }
-
         }
     }
-
-    // method to generate the chance of an application being accepted as a percentage
-    public void generateRule()
-    {
-        try
-        {
-            for (int i = 0; i < permRulesPercentage.length; i++)
-            {
-                double total = frequencyOutcomes[i][0] + frequencyOutcomes[i][1]; // get total ("Yes"s + "No"s)
-                double percentage = (frequencyOutcomes[i][0] / total) * 100; // get percentages of "Yes"s
-                permRulesPercentage[i] = percentage;
-
-
-            }
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-
-    }
-
-    public double[] getPermRulesPercentage()
-    {
-        return permRulesPercentage;
-    }
-
 
     public String[][] getPermutationTable()
     {
@@ -304,8 +188,6 @@ public class CSVFileProcessor
         return featureValues;
     }
 
-    public int[][] getFrequencyOutcomes() {
-        return frequencyOutcomes;
-    }
+
 
 }

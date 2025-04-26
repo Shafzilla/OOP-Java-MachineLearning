@@ -71,14 +71,14 @@ public class Evaluate
             };
 
     private double testAccuracy;
-    public Evaluate()
+    public Evaluate(String file)
     {
 
-        CSVFileProcessor fileProcessor = new CSVFileProcessor("application_data.csv");
-        fileProcessor.buildCSVList();
-        data = fileProcessor.getListCSV();
-        featureValues = fileProcessor.getFeatureValues();
-        permutationTable = fileProcessor.getPermutationTable();
+        CSVFileProcessor fileProcessor = new CSVFileProcessor(file);
+        setData(fileProcessor.getListCSV());
+        setFeatureValues(fileProcessor.getFeatureValues());
+        setPermutationTable(fileProcessor.getPermutationTable());
+
 
     }
 
@@ -265,9 +265,68 @@ public class Evaluate
         System.out.println(testAccuracy);
     }
 
-
     public double getTestAccuracy()
     {
         return testAccuracy;
+    }
+
+    public ArrayList<Map<String, String>> getData()
+    {
+        return data;
+    }
+
+    public String[] getFeatureValues()
+    {
+        return featureValues;
+    }
+
+    public String[][] getPermutationTable()
+    {
+        return permutationTable;
+    }
+
+    public int[][] getTestingFreqTable()
+    {
+        return testingFreqTable;
+    }
+
+    public double[] getTestingRulePercentage()
+    {
+        return testingRulePercentage;
+    }
+
+    public String[] getTestLikelyHood()
+    {
+        return testLikelyHood;
+    }
+
+    public void setFeatureValues(String[] featureValues)
+    {
+        this.featureValues = featureValues;
+    }
+
+    public void setData(ArrayList<Map<String, String>> data)
+    {
+        this.data = data;
+    }
+
+    public void setPermutationTable(String[][] permutationTable)
+    {
+        this.permutationTable = permutationTable;
+    }
+
+    public void setTestingFreqTable(int[][] testingFreqTable)
+    {
+        this.testingFreqTable = testingFreqTable;
+    }
+
+    public void setTestLikelyHood(String[] testLikelyHood)
+    {
+        this.testLikelyHood = testLikelyHood;
+    }
+
+    public void setTestAccuracy(double testAccuracy)
+    {
+        this.testAccuracy = testAccuracy;
     }
 }
