@@ -2,7 +2,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -42,12 +41,8 @@ public class GUI extends JFrame implements ActionListener
 
         trainer = new CSVFileProcessor(file);
 
-
         setSize(800, 600);
         setLayout(new FlowLayout());
-
-
-
 
         String[] BinaryOptions = {"Yes", "No"};
         creditBox = new JComboBox<>(BinaryOptions);
@@ -56,25 +51,15 @@ public class GUI extends JFrame implements ActionListener
         collateralBox = new JComboBox<>(BinaryOptions);
         acceptedBox = new JComboBox<>(BinaryOptions);
 
-        ImageIcon icon = new ImageIcon("predictIcon.jpg");
-        Image scaledImage = icon.getImage().getScaledInstance(50,50,Image.SCALE_SMOOTH);
-        ImageIcon resizedIcon = new ImageIcon(scaledImage);
+        ImageIcon predictIcon = makeIcon("predictIcon.jpg");
+        ImageIcon trainingIcon = makeIcon("trainingIcon.png");
+        ImageIcon saveIcon = makeIcon("saveIcon.png");
 
-        ImageIcon icon2 = new ImageIcon("trainingIcon.png");
-        Image scaledImage2 = icon2.getImage().getScaledInstance(50,50,Image.SCALE_SMOOTH);
-        ImageIcon resizedIcon2 = new ImageIcon(scaledImage2);
-
-        ImageIcon icon3 = new ImageIcon("saveIcon.png");
-        Image scaledImage3 = icon3.getImage().getScaledInstance(50,50,Image.SCALE_SMOOTH);
-        ImageIcon resizedIcon3 = new ImageIcon(scaledImage3);
-
-
-
-        predictionButton = new JButton(resizedIcon);
+        predictionButton = new JButton(predictIcon);
         predictionButton.addActionListener(this);
-        trainButton = new JButton(resizedIcon2);
+        trainButton = new JButton(trainingIcon);
         trainButton.addActionListener(this);
-        saveButton = new JButton(resizedIcon3);
+        saveButton = new JButton(saveIcon);
         saveButton.addActionListener(this);
 
         add(new JLabel("Has Good Credit:"));
@@ -146,14 +131,10 @@ public class GUI extends JFrame implements ActionListener
 
 //        add(tabbedPane);
 
-
-
-
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
 
     }
-
 
     @Override
     public void actionPerformed(ActionEvent e)
@@ -170,9 +151,6 @@ public class GUI extends JFrame implements ActionListener
         {
             save((String) creditBox.getSelectedItem(), (String) jobBox.getSelectedItem(), (String) debtBox.getSelectedItem(), (String) collateralBox.getSelectedItem(), (String) acceptedBox.getSelectedItem());
         }
-
-
-
 
     }
 
@@ -292,6 +270,13 @@ public class GUI extends JFrame implements ActionListener
             e.printStackTrace();
         }
 
+    }
+
+    public ImageIcon makeIcon(String imageFile)
+    {
+        ImageIcon icon = new ImageIcon(imageFile);
+        Image scaledImage = icon.getImage().getScaledInstance(50,50,Image.SCALE_SMOOTH);
+        return new ImageIcon(scaledImage);
     }
 
 

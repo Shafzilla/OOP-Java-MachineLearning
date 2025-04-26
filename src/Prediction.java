@@ -116,7 +116,6 @@ public class Prediction
                 double percentage = (frequencyOutcomes[i][0] / total) * 100; // get percentages of "Yes"s
                 permRulesPercentage[i] = percentage;
 
-
             }
         }
         catch (Exception e)
