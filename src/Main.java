@@ -7,11 +7,11 @@ public class Main {
     public static void main(String[] args)
     {
 
-//        CSVFileProcessor fileProcess = new CSVFileProcessor();
+//        CSVFileProcessor fileProcess = new CSVFileProcessor("application_data.csv");
 //        fileProcess.buildCSVList();
-//        fileProcess.printCSVList();
-//        fileProcess.printFrequencyTable();
-//        fileProcess.generateRule();
+//        fileProcess.evaluateAccuracy();
+
+
 
 
         GUI myScreen = new GUI("My gui");

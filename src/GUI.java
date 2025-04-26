@@ -40,8 +40,10 @@ public class GUI extends JFrame implements ActionListener
         trainer = new CSVFileProcessor("application_data.csv");
 
 
-        setSize(400, 300);
+        setSize(800, 600);
         setLayout(new FlowLayout());
+
+
 
         String[] BinaryOptions = {"Yes", "No"};
         creditBox = new JComboBox<>(BinaryOptions);
@@ -50,11 +52,25 @@ public class GUI extends JFrame implements ActionListener
         collateralBox = new JComboBox<>(BinaryOptions);
         acceptedBox = new JComboBox<>(BinaryOptions);
 
-        predictionButton = new JButton("Predict");
+        ImageIcon icon = new ImageIcon("predictIcon.jpg");
+        Image scaledImage = icon.getImage().getScaledInstance(50,50,Image.SCALE_SMOOTH);
+        ImageIcon resizedIcon = new ImageIcon(scaledImage);
+
+        ImageIcon icon2 = new ImageIcon("trainingIcon.png");
+        Image scaledImage2 = icon2.getImage().getScaledInstance(50,50,Image.SCALE_SMOOTH);
+        ImageIcon resizedIcon2 = new ImageIcon(scaledImage2);
+
+        ImageIcon icon3 = new ImageIcon("saveIcon.png");
+        Image scaledImage3 = icon3.getImage().getScaledInstance(50,50,Image.SCALE_SMOOTH);
+        ImageIcon resizedIcon3 = new ImageIcon(scaledImage3);
+
+
+
+        predictionButton = new JButton(resizedIcon);
         predictionButton.addActionListener(this);
-        trainButton = new JButton("Train");
+        trainButton = new JButton(resizedIcon2);
         trainButton.addActionListener(this);
-        saveButton = new JButton("Save");
+        saveButton = new JButton(resizedIcon3);
         saveButton.addActionListener(this);
 
         add(new JLabel("Has Good Credit:"));
@@ -70,6 +86,64 @@ public class GUI extends JFrame implements ActionListener
         add(predictionButton);
         add(trainButton);
         add(saveButton);
+
+//        JPanel panel1 = new JPanel();
+//        panel1.add(new JLabel("Has Good Credit:"));
+//        panel1.add(creditBox);
+//        panel1.add(new JLabel("Has Stable Job"));
+//        panel1.add(jobBox);
+//        panel1.add(new JLabel("Has Debt"));
+//        panel1.add(debtBox);
+//        panel1.add(new JLabel("Has Collateral"));
+//        panel1.add(collateralBox);
+//        panel1.add(new JLabel("Is Accepted"));
+//        panel1.add(acceptedBox);
+//        panel1.add(saveButton);
+//
+//
+//
+//
+//
+//        JPanel panel2 = new JPanel();
+//        panel2.add(new JLabel("Has Good Credit:"));
+//        panel2.add(creditBox);
+//        panel2.add(new JLabel("Has Stable Job"));
+//        panel2.add(jobBox);
+//        panel2.add(new JLabel("Has Debt"));
+//        panel2.add(debtBox);
+//        panel2.add(new JLabel("Has Collateral"));
+//        panel2.add(collateralBox);
+//        panel2.add(new JLabel("Is Accepted"));
+//        panel2.add(acceptedBox);
+//        panel2.add(saveButton);
+//
+//        JPanel panel3 = new JPanel();
+//        panel3.add(new JLabel("Has Good Credit:"));
+//        panel3.add(creditBox);
+//        panel3.add(new JLabel("Has Stable Job"));
+//        panel3.add(jobBox);
+//        panel3.add(new JLabel("Has Debt"));
+//        panel3.add(debtBox);
+//        panel3.add(new JLabel("Has Collateral"));
+//        panel3.add(collateralBox);
+//        panel3.add(new JLabel("Is Accepted"));
+//        panel3.add(acceptedBox);
+//        panel3.add(saveButton);
+//
+//
+//
+//
+//
+//        JTabbedPane tabbedPane = new JTabbedPane();
+//        tabbedPane.add("Predict", panel1);
+//        tabbedPane.add("save", panel2);
+//        tabbedPane.add("predict", panel3);
+
+
+//        add(tabbedPane);
+
+
+
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
@@ -92,6 +166,7 @@ public class GUI extends JFrame implements ActionListener
         {
             save((String) creditBox.getSelectedItem(), (String) jobBox.getSelectedItem(), (String) debtBox.getSelectedItem(), (String) collateralBox.getSelectedItem(), (String) acceptedBox.getSelectedItem());
         }
+
 
 
 
@@ -153,11 +228,40 @@ public class GUI extends JFrame implements ActionListener
 
     public void train()
     {
-        trainer.buildCSVList();
-        trainer.generateRule();
-        percentageClassifier = trainer.getPermRulesPercentage();
-        frequencyTable = trainer.getPermutationTable();
-        trained = true;
+        try
+        {
+            trainer.buildCSVList();
+            trainer.generateRule();
+            trainer.evaluateAccuracy();
+            double accuracy = trainer.getTestAccuracy();
+            percentageClassifier = trainer.getPermRulesPercentage();
+            frequencyTable = trainer.getPermutationTable();
+            trained = true;
+
+            JLabel accuracyLabel = new JLabel("Accuracy" + accuracy);
+            add(accuracyLabel);
+            revalidate();
+            repaint();
+
+
+
+            JOptionPane.showMessageDialog(this,
+                    "Model Trained",
+                    "Trained",
+                    JOptionPane.INFORMATION_MESSAGE
+            );
+
+        }
+        catch (Exception e)
+        {
+            JOptionPane.showMessageDialog(this,
+                    "Error",
+                    "Error",
+                    JOptionPane.INFORMATION_MESSAGE
+            );
+            e.printStackTrace();
+        }
+
 
     }
 
@@ -167,6 +271,11 @@ public class GUI extends JFrame implements ActionListener
         {
             String enteredData = String.format("%s,%s,%s,%s,%s\n", credit, job, debt, collateral, accepted);
             bw.write(enteredData);
+            JOptionPane.showMessageDialog(this,
+                    "Entry Saved",
+                    "Entry Saved",
+                    JOptionPane.INFORMATION_MESSAGE
+            );
 
         }
         catch (IOException e)

@@ -85,6 +85,69 @@ public class CSVFileProcessor
             0
     };
 
+    private int[][] testingFreqTable =
+            {
+                    {0,0},
+                    {0,0},
+                    {0,0},
+                    {0,0},
+                    {0,0},
+                    {0,0},
+                    {0,0},
+                    {0,0},
+                    {0,0},
+                    {0,0},
+                    {0,0},
+                    {0,0},
+                    {0,0},
+                    {0,0},
+                    {0,0},
+                    {0,0},
+            };
+
+    private final double[] testingRulePercentage =
+            {
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+            };
+
+    private String[] testLikelyHood =
+            {
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    ""
+            };
+
+    private double testAccuracy;
+
+
 
 
     public CSVFileProcessor(String file)
@@ -303,5 +366,158 @@ public class CSVFileProcessor
     public String[][] getPermutationTable()
     {
         return permutationTable;
+    }
+
+    public void evaluateAccuracy()
+    {
+
+        for(int i = 0; i < 150; i++)
+        {
+
+            Map<String, String> row = listCSV.get(i);
+
+            String[] rowScanList = new String[5];
+
+            for (int j = 0; j < featureValues.length; j++)
+            {
+                rowScanList[j] = row.get(featureValues[j]);
+            }
+
+            int k = 0;
+            for (String[] permutationMatcher : permutationTable)
+            {
+
+                if (Objects.equals(permutationMatcher[0], rowScanList[0])
+                        && Objects.equals(permutationMatcher[1], rowScanList[1])
+                        && Objects.equals(permutationMatcher[2], rowScanList[2])
+                        && Objects.equals(permutationMatcher[3], rowScanList[3]))
+                {
+                    if (Objects.equals(rowScanList[4], "Yes"))
+                    {
+                        testingFreqTable[k][0] = testingFreqTable[k][0] + 1; // to increment "Yes"s per permutation
+                    } else if (Objects.equals(rowScanList[4], "No"))
+                    {
+                        testingFreqTable[k][1] = testingFreqTable[k][1] + 1; // to increment "No"s per permutation
+                    }
+                    break;
+
+
+
+                }
+
+                k = k+1;
+
+            }
+        }
+
+        for (int[] row : testingFreqTable)
+        {
+            System.out.println("Yes: " + row[0] + " No: " + row[1]);
+        }
+
+        
+        for (int i = 0; i < testingRulePercentage.length; i++)
+        {
+            double total = testingFreqTable[i][0] + testingFreqTable[i][1]; // get total ("Yes"s + "No"s)
+            double percentage = (testingFreqTable[i][0] / total) * 100; // get percentages of "Yes"s
+            testingRulePercentage[i] = percentage;
+
+            //            if (frequencyOutcomes[i][0] >= (total / 2))
+            //            {
+            //                permRulesPercentage[i] = 1;
+            //            }
+            //            else
+            //            {
+            //                permRulesPercentage[i] = 0;
+            //            }
+        }
+
+        for (double row : testingRulePercentage)
+        {
+            System.out.println(row);
+        }
+
+
+        
+        
+        for(int i = 0; i < testingRulePercentage.length; i++)
+        {
+            if(testingRulePercentage[i] >= 50)
+            {
+                testLikelyHood[i] = "Yes";
+            }
+            else
+            {
+                testLikelyHood[i] = "No";
+            }
+            
+        }
+
+        for (String row : testLikelyHood)
+        {
+            System.out.println(row);
+        }
+        
+        int testYesNum = 0;
+        int testNoNum = 0;
+        
+        
+
+        for(int i = 150; i < 200; i++)
+        {
+
+            Map<String, String> row = listCSV.get(i);
+
+            String[] rowScanList = new String[5];
+
+            for (int j = 0; j < featureValues.length; j++)
+            {
+                rowScanList[j] = row.get(featureValues[j]);
+            }
+
+            int k = 0;
+            for (String[] permutationMatcher : permutationTable)
+            {
+
+                if (Objects.equals(permutationMatcher[0], rowScanList[0])
+                        && Objects.equals(permutationMatcher[1], rowScanList[1])
+                        && Objects.equals(permutationMatcher[2], rowScanList[2])
+                        && Objects.equals(permutationMatcher[3], rowScanList[3]))
+                {
+                    if (Objects.equals(rowScanList[4], testLikelyHood[k]))
+                    {
+                        testYesNum = testYesNum + 1;
+                    } 
+                    else 
+                    {
+                        testNoNum = testNoNum + 1;
+                    }
+                    break;
+
+
+
+                }
+
+                k = k+1;
+
+            }
+        }
+
+        System.out.println(testYesNum);
+        System.out.println(testNoNum);
+
+
+        double testTotal = testYesNum + testNoNum;
+        testAccuracy = (testYesNum / testTotal) * 100;
+
+        System.out.println(testAccuracy);
+        
+        
+
+
+    }
+
+    public double getTestAccuracy() {
+        return testAccuracy;
     }
 }
