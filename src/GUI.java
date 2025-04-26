@@ -232,8 +232,9 @@ public class GUI extends JFrame implements ActionListener
         {
             trainer.buildCSVList();
             trainer.generateRule();
-            trainer.evaluateAccuracy();
-            double accuracy = trainer.getTestAccuracy();
+            Evaluate evaluation = new Evaluate();
+            evaluation.evaluateAccuracy();
+            double accuracy = evaluation.getTestAccuracy();
             percentageClassifier = trainer.getPermRulesPercentage();
             frequencyTable = trainer.getPermutationTable();
             trained = true;

@@ -9,7 +9,8 @@ public class Main {
 
 //        CSVFileProcessor fileProcess = new CSVFileProcessor("application_data.csv");
 //        fileProcess.buildCSVList();
-//        fileProcess.evaluateAccuracy();
+//        Evaluate evaluation = new Evaluate();
+//        evaluation.printData();
 
 
 
