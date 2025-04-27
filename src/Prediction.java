@@ -54,9 +54,30 @@ public class Prediction
                     0
             };
 
+    private String[] testLikelyHood =
+            {
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    ""
+            };
+
 
     public Prediction(String file)
     {
+        data = new ArrayList<>();
         CSVFileProcessor fileProcessor = new CSVFileProcessor(file);
         setData(fileProcessor.getListCSV());
         setPermutationTable(fileProcessor.getPermutationTable());
@@ -203,5 +224,7 @@ public class Prediction
         return frequencyOutcomes[row][col];
     }
 
-
+    public String[] getTestLikelyHood() {
+        return testLikelyHood;
+    }
 }

@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.Objects;
 
-public class Evaluate
+public class Evaluate extends Prediction
 {
     private String[] featureValues;
 
@@ -10,69 +10,19 @@ public class Evaluate
 
     private String[][] permutationTable;
 
-    private int[][] testingFreqTable =
-            {
-                    {0,0},
-                    {0,0},
-                    {0,0},
-                    {0,0},
-                    {0,0},
-                    {0,0},
-                    {0,0},
-                    {0,0},
-                    {0,0},
-                    {0,0},
-                    {0,0},
-                    {0,0},
-                    {0,0},
-                    {0,0},
-                    {0,0},
-                    {0,0},
-            };
+    private int[][] testingFreqTable = getFrequencyOutcomes();
 
-    private final double[] testingRulePercentage =
-            {
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0
-            };
+    private final double[] testingRulePercentage = getPermRulesPercentage();
 
-    private String[] testLikelyHood =
-            {
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    ""
-            };
+    private String[] testLikelyHood;
 
     private double testAccuracy;
+
     public Evaluate(String file)
     {
+        super(file);
+        testLikelyHood = new String[16];
+        testLikelyHood = getTestLikelyHood();
 
         CSVFileProcessor fileProcessor = new CSVFileProcessor(file);
         setData(fileProcessor.getListCSV());
