@@ -21,8 +21,8 @@ public class Evaluate extends Prediction
     public Evaluate(String file)
     {
         super(file);
+
         testLikelyHood = new String[16];
-        testLikelyHood = getTestLikelyHood();
 
         CSVFileProcessor fileProcessor = new CSVFileProcessor(file);
         setData(fileProcessor.getListCSV());

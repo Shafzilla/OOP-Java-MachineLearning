@@ -15,7 +15,6 @@ import javax.swing.JLabel;
 public class GUI extends JFrame implements ActionListener
 {
     private String file;
-
     private JComboBox<String> creditBox;
     private JComboBox<String> jobBox;
     private JComboBox<String> debtBox;
@@ -33,16 +32,20 @@ public class GUI extends JFrame implements ActionListener
 
     private String[][] frequencyTable;
 
-    public GUI(String title)
+    public GUI(String title, String file)
     {
         super(title);
 
-        file = "application_data.csv";
+        this.file = file;
 
         trainer = new CSVFileProcessor(file);
 
         setSize(800, 600);
-        setLayout(new FlowLayout());
+        setBackground(Color.gray);
+//        setLayout(new FlowLayout());
+
+        Container contentPane = getContentPane();
+        contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.Y_AXIS));
 
         String[] BinaryOptions = {"Yes", "No"};
         creditBox = new JComboBox<>(BinaryOptions);
@@ -55,11 +58,11 @@ public class GUI extends JFrame implements ActionListener
         ImageIcon trainingIcon = makeIcon("trainingIcon.png");
         ImageIcon saveIcon = makeIcon("saveIcon.png");
 
-        predictionButton = new JButton(predictIcon);
+        predictionButton = new JButton("Predict", predictIcon);
         predictionButton.addActionListener(this);
-        trainButton = new JButton(trainingIcon);
+        trainButton = new JButton("train", trainingIcon);
         trainButton.addActionListener(this);
-        saveButton = new JButton(saveIcon);
+        saveButton = new JButton("save", saveIcon);
         saveButton.addActionListener(this);
 
         add(new JLabel("Has Good Credit:"));

@@ -17,7 +17,7 @@ public class Main {
 
 
 
-        GUI myScreen = new GUI("My gui");
+        GUI myScreen = new GUI("My gui", "application_data.csv");
 
 
 
