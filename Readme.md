@@ -10,6 +10,10 @@ or enter the label value to save an entry straight to the CSV file.
 This project is useful for real world application where you have to train a model to analyse previous 
 data and predict an outcome.
 
+Demonstation:
+
+[](https://youtu.be/4YCqfhqX2BY)
+
 ## Table of Contents
 
 *   [Features](#features)
@@ -22,7 +26,7 @@ data and predict an outcome.
 
 This application implements the following functionalities:
 
-1.  **Loan Approval Prediction:** Users can input values for the four features (Has Good Credit, Has Stable Job, Has Debt, Has Collateral) via dropdown menus and receive a percentage probability of their loan application being accepted.
+1.  **Loan Approval Prediction:** Users can input values for the four features (Has Good Credit, Has Stable Job, Has Debt, Has Collateral) with dropdown menus and receive a percentage probability of their loan application being accepted.
 2.  **Dynamic Model Training:** The predictive model can be trained (or retrained) directly from the `application_data.csv` file by clicking the "Train" button. This reads the dataset and calculates the probability rules based on the frequency of outcomes for each input permutation.
 3.  **Data Expansion:** Users can add new examples to the training dataset. By selecting values for all four features *and* the known outcome ("Application Accepted"), users can click "Save" to append this new entry to the `application_data.csv` file. The model is automatically retrained after saving.
 4.  **Accuracy Evaluation:** The application assesses the predictor's accuracy. When "Train" is clicked, it internally trains a model on the first 150 rows of data and then tests its predictions against the next 50 rows, displaying the calculated accuracy percentage on the GUI.
@@ -32,22 +36,21 @@ This application implements the following functionalities:
 The project is structured into the following main classes:
 
 *   **`GUI`**:
-    *   Provides the main interactive window using Java Swing.
-    *   Contains `JComboBox` elements for user input (features and label).
+    *   Provides the main interactive window using Java Swing JFrame.
+    *   Contains `JComboBox` elements for user input (feature and label values)
     *   Includes buttons ("Predict", "Train", "Save") to trigger core actions.
     *   Displays model accuracy after training.
-    *   Uses `JOptionPane` for feedback messages (predictions, confirmations, errors).
-    *   Handles button click events to orchestrate the application's workflow.
+    *   Uses `JOptionPane` for feedback messages
+    *   Handles button click events 
 
 *   **`CSVFileProcessor`**:
     *   Handles reading and parsing the input `application_data.csv` file.
-    *   Extracts the header row for feature names.
     *   Parses data rows into an `ArrayList<Map<String, String>>` structure.
     *   Generates and stores all 16 possible permutations of the four input features.
     *   Provides methods for other classes to access the loaded data, features, and permutations.
 
 *   **`Prediction`**:
-    *   Analyzes the *entire* dataset loaded via `CSVFileProcessor`.
+    *   Analyzes the entire dataset loaded via `CSVFileProcessor`.
     *   Calculates a frequency table (`frequencyOutcomes`) counting "Yes"/"No" outcomes for each input permutation across all data.
     *   Generates probability rules (`permRulesPercentage`) based on the full dataset frequencies.
     *   Provides these rules to the `GUI` for making predictions.
@@ -57,25 +60,23 @@ The project is structured into the following main classes:
     *   Extends `Prediction` to specifically assess model accuracy.
     *   Performs a train/test split: trains a temporary model using only the *first 150 rows*.
     *   Generates a simple binary classifier ("Yes"/"No") based on the 150-row training rules (>=50% probability = "Yes").
-    *   Tests this classifier against the *next 50 rows* (150-199).
+    *   Tests this classifier against the next 50 rows (150-199).
     *   Compares predictions to actual labels in the test set to calculate accuracy.
     *   Provides the calculated accuracy score to the `GUI`.
 
-*   **`Main`**: (Assuming you have one)
+*   **`Main`**
     *   Contains the `main` method, the entry point of the application.
     *   Instantiates and displays the `GUI` window.
 
 ## Installation
 
 1.  **Prerequisites:**
-    *   Java Development Kit (JDK) installed (e.g., version 8 or higher).
     *   An IDE like IntelliJ IDEA, Eclipse, or VS Code (optional, but recommended).
-    *   The `application_data.csv` file present in the project's root directory (or specified path).
-    *   An `images` folder containing the icon files (`predictIcon.jpg`, `trainingIcon.png`, `saveIcon.png`) in the project's root directory.
+    *   The `application_data.csv` file present in the project's root directory.
 2.  **Steps:**
-    *   Clone or download the project files from the repository.
-    *   Open the project in your IDE or compile the `.java` files using a terminal (`javac *.java`).
-    *   Run the `Main` class (or execute the compiled code: `java Main`).
+    *   Clone or download the project files from the repository https://github.com/Shafzilla/OOP-Java-MachineLearning.
+    *   Open the project in your IDE.
+    *   Run the `Main` class.
 
 ## Usage
 
