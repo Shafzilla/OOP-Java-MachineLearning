@@ -81,7 +81,7 @@ The project is structured into the following main classes:
 
 1.  Launch the application by running the `Main` class.
 2.  The GUI window will appear.
-    !GUI Screenshot <!-- Assuming img_2 shows the main GUI -->
+    ![](images/img_2.png)
 3.  **Train the Model:** Click the "Train" button first. This reads the `application_data.csv`, calculates prediction rules, evaluates accuracy on a subset, and displays the accuracy.
 4.  **Make a Prediction:**
     *   Select "Yes" or "No" for the first four features ("Has Good Credit", "Has Stable Job", etc.).
@@ -93,16 +93,14 @@ The project is structured into the following main classes:
 
 ## Future Enhancements
 
-If more time were available, the following improvements could be considered:
+If more time were available, I would add the folowing improvements:
 
-*   **Improved Error Handling:** More robust handling of file not found errors, CSV parsing errors (e.g., incorrect number of columns, invalid values), and potential runtime exceptions during calculations.
-*   **Data Validation:** Add validation to ensure the loaded CSV data conforms to expectations ("Yes"/"No" values only, correct number of columns). Prevent saving if input is incomplete.
+
+*   **Data Validation:** Add validation to make sure the loaded CSV data is as expected ("Yes"/"No" values only, correct number of columns). The application would prevent saving if input is incomplete.
 *   **UI Enhancements:**
-    *   Use more sophisticated layout managers (like `GridBagLayout` or `BorderLayout`) for better component arrangement and resizing.
-    *   Provide clearer visual separation between prediction inputs, saving inputs, and training controls.
+    *   Use more sophisticated layout managers (like `GridBagLayout` or `BorderLayout`) for better component arrangement and resizing. this would allow me to have a clearly defined prediction section and saving section
     *   Display prediction results directly on the main GUI instead of only in a pop-up.
     *   Add a status bar or log area for more detailed feedback.
-*   **Model Persistence:** Save the calculated `frequencyOutcomes` or `permRulesPercentage` to a separate file after training, so the application doesn't *always* need to retrain on startup. Add a "Load Model" button.
-*   **Input Flexibility:** Allow specifying the input CSV file path via the GUI or command-line arguments instead of hardcoding it.
-*   **More Advanced Models:** Explore slightly more complex classification algorithms if the dataset were larger or had different types of features (though this might go beyond the scope of the original assignment).
+*   **Model Persistence:** Save the calculated `frequencyOutcomes` or `permRulesPercentage` to a separate file after training, so the application doesn't always have to need to retrain on startup. Add a "Load Model" button.
+*   **Input Flexibility:** Allow specifying the input CSV file path via the GUI or command-line arguments instead of hardcoding it in Main.java.
 *   **Unit Testing:** Add unit tests for the `CSVFileProcessor`, `Prediction`, and `Evaluate` classes to verify their logic independently.
