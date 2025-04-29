@@ -173,27 +173,31 @@ public class GUI extends JFrame implements ActionListener
 
         int permIndex = 0;
 
-        for (String[] row : frequencyTable)
-        { // start for loop
+        try {
+            for (String[] row : frequencyTable) { // start for loop
 
-            if (Objects.equals(row[0], credit) && Objects.equals(row[1], job) && Objects.equals(row[2], debt)
-                    && Objects.equals(row[3], collateral))
-            { // start if
-                double acceptedPercentage = percentageClassifier[permIndex];
+                if (Objects.equals(row[0], credit) && Objects.equals(row[1], job) && Objects.equals(row[2], debt)
+                        && Objects.equals(row[3], collateral)) { // start if
+                    double acceptedPercentage = percentageClassifier[permIndex];
 
-                JOptionPane.showMessageDialog(this,
-                        "chances of loan approval: " + String.format("%.2f", acceptedPercentage) + "%",
-                        "Prediction Result",
-                        JOptionPane.INFORMATION_MESSAGE
-                );
+                    JOptionPane.showMessageDialog(this,
+                            "chances of loan approval: " + String.format("%.2f", acceptedPercentage) + "%",
+                            "Prediction Result",
+                            JOptionPane.INFORMATION_MESSAGE
+                    );
 
-                found = true;
-                break;
+                    found = true;
+                    break;
 
-            } // end if
-            permIndex = permIndex + 1;
+                } // end if
+                permIndex = permIndex + 1;
 
-        } // end for loop
+            } // end for loop
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
 
         if(!found)
         { // start if

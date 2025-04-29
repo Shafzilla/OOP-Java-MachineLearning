@@ -128,53 +128,75 @@ public class Evaluate extends Prediction
 
     public void printTestFreqTable()
     {
-        for (int[] row : testingFreqTable)
+        try {
+            for (int[] row : testingFreqTable) {
+                System.out.println("Yes: " + row[0] + " No: " + row[1]);
+            }
+        }
+        catch (Exception e)
         {
-            System.out.println("Yes: " + row[0] + " No: " + row[1]);
+            e.printStackTrace();
         }
     }
 
     public void setTestingRulePercentage()
     {
-        for (int i = 0; i < testingRulePercentage.length; i++)
-        {
-            double total = testingFreqTable[i][0] + testingFreqTable[i][1]; // get total ("Yes"s + "No"s)
-            double percentage = (testingFreqTable[i][0] / total) * 100; // get percentages of "Yes"s
-            testingRulePercentage[i] = percentage;
+        try {
+            for (int i = 0; i < testingRulePercentage.length; i++) {
+                double total = testingFreqTable[i][0] + testingFreqTable[i][1]; // get total ("Yes"s + "No"s)
+                double percentage = (testingFreqTable[i][0] / total) * 100; // get percentages of "Yes"s
+                testingRulePercentage[i] = percentage;
 
+            }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
         }
     }
 
     public void printTestingRulePercentage()
     {
-        for (double row : testingRulePercentage)
+        try {
+            for (double row : testingRulePercentage) {
+                System.out.println(row);
+            }
+        }
+        catch (Exception e)
         {
-            System.out.println(row);
+            e.printStackTrace();
         }
 
     }
 
     public void calculateTestLikelyhood()
     {
-        for(int i = 0; i < testingRulePercentage.length; i++)
-        {
-            if(testingRulePercentage[i] >= 50)
-            {
-                testLikelyHood[i] = "Yes";
-            }
-            else
-            {
-                testLikelyHood[i] = "No";
-            }
+        try {
+            for (int i = 0; i < testingRulePercentage.length; i++) {
+                if (testingRulePercentage[i] >= 50) {
+                    testLikelyHood[i] = "Yes";
+                } else {
+                    testLikelyHood[i] = "No";
+                }
 
+            }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
         }
     }
 
     public void printTestLikelyhood()
     {
-        for (String row : testLikelyHood)
+        try {
+            for (String row : testLikelyHood) {
+                System.out.println(row);
+            }
+        }
+        catch (Exception e)
         {
-            System.out.println(row);
+            e.printStackTrace();
         }
     }
 

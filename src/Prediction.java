@@ -76,48 +76,46 @@ public class Prediction
             return;
         }
 
+        try {
+            for (int i = 0; i < data.size(); i++) {
 
-        for(int i = 0; i < data.size(); i++)
-        {
+                Map<String, String> row = data.get(i);
 
-            Map<String, String> row = data.get(i);
-
-            if(row == null)
-            {
-                System.err.println("error occurred: row is null in data");
-                continue;
-            }
-
-            String[] rowScanList = new String[5];
-
-            for (int j = 0; j < featureValues.length; j++)
-            {
-                rowScanList[j] = row.get(featureValues[j]);
-            }
-
-            int k = 0;
-            for (String[] permutationMatcher : permutationTable)
-            {
-
-                if (Objects.equals(permutationMatcher[0], rowScanList[0])
-                        && Objects.equals(permutationMatcher[1], rowScanList[1])
-                        && Objects.equals(permutationMatcher[2], rowScanList[2])
-                        && Objects.equals(permutationMatcher[3], rowScanList[3]))
-                {
-                    if (Objects.equals(rowScanList[4], "Yes"))
-                    {
-                        frequencyOutcomes[k][0] = frequencyOutcomes[k][0] + 1; // to increment "Yes"s per permutation
-                    } else if (Objects.equals(rowScanList[4], "No"))
-                    {
-                        frequencyOutcomes[k][1] = frequencyOutcomes[k][1] + 1; // to increment "No"s per permutation
-                    }
-                    break;
-
+                if (row == null) {
+                    System.err.println("error occurred: row is null in data");
+                    continue;
                 }
 
-                k = k+1;
+                String[] rowScanList = new String[5];
 
+                for (int j = 0; j < featureValues.length; j++) {
+                    rowScanList[j] = row.get(featureValues[j]);
+                }
+
+                int k = 0;
+                for (String[] permutationMatcher : permutationTable) {
+
+                    if (Objects.equals(permutationMatcher[0], rowScanList[0])
+                            && Objects.equals(permutationMatcher[1], rowScanList[1])
+                            && Objects.equals(permutationMatcher[2], rowScanList[2])
+                            && Objects.equals(permutationMatcher[3], rowScanList[3])) {
+                        if (Objects.equals(rowScanList[4], "Yes")) {
+                            frequencyOutcomes[k][0] = frequencyOutcomes[k][0] + 1; // to increment "Yes"s per permutation
+                        } else if (Objects.equals(rowScanList[4], "No")) {
+                            frequencyOutcomes[k][1] = frequencyOutcomes[k][1] + 1; // to increment "No"s per permutation
+                        }
+                        break;
+
+                    }
+
+                    k = k + 1;
+
+                }
             }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
         }
     }
 
@@ -157,20 +155,25 @@ public class Prediction
 
     public void printData()
     {
-        for(int i = 0; i < data.size(); i++)
-        {
-            Map<String, String> row = data.get(i);
+        try {
+            for (int i = 0; i < data.size(); i++) {
+                Map<String, String> row = data.get(i);
 
-            String[] rowScanList = new String[5];
+                String[] rowScanList = new String[5];
 
-            for (int j = 0; j < featureValues.length; j++)
-            {
-                rowScanList[j] = row.get(featureValues[j]);
+                for (int j = 0; j < featureValues.length; j++) {
+                    rowScanList[j] = row.get(featureValues[j]);
+                }
+
+                System.out.println(rowScanList[0] + " " + rowScanList[1] + " " + rowScanList[2] + " " + rowScanList[3] + " " + rowScanList[4]);
+
             }
-
-            System.out.println(rowScanList[0] + " " + rowScanList[1] + " " + rowScanList[2] + " " + rowScanList[3] + " " + rowScanList[4]);
-
         }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
     }
 
     public double[] getPermRulesPercentage()
