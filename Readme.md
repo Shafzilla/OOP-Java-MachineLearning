@@ -12,119 +12,97 @@ data and predict an outcome.
 
 ## Table of Contents
 
-* [Description](#description)
-* [Installation](#installation)
-* [Usage](#usage)
-* [Prediction](#Prediction)
+*   [Features](#features)
+*   [Classes](#classes)
+*   [Installation](#installation)
+*   [Usage](#usage)
+*   [Future Enhancements](#future-enhancements)
 
-## Description
+## Features
 
-Provide a more detailed explanation of your project. You can include:
+This application implements the following functionalities:
 
-* Reduces the need for an individual to speak with a human to find out wether their 
-loan would be approved
-* features : predictor, train classifier, save to csv file
+1.  **Loan Approval Prediction:** Users can input values for the four features (Has Good Credit, Has Stable Job, Has Debt, Has Collateral) via dropdown menus and receive a percentage probability of their loan application being accepted.
+2.  **Dynamic Model Training:** The predictive model can be trained (or retrained) directly from the `application_data.csv` file by clicking the "Train" button. This reads the dataset and calculates the probability rules based on the frequency of outcomes for each input permutation.
+3.  **Data Expansion:** Users can add new examples to the training dataset. By selecting values for all four features *and* the known outcome ("Application Accepted"), users can click "Save" to append this new entry to the `application_data.csv` file. The model is automatically retrained after saving.
+4.  **Accuracy Evaluation:** The application assesses the predictor's accuracy. When "Train" is clicked, it internally trains a model on the first 150 rows of data and then tests its predictions against the next 50 rows, displaying the calculated accuracy percentage on the GUI.
+
+## Classes
+
+The project is structured into the following main classes:
+
+*   **`GUI`**:
+    *   Provides the main interactive window using Java Swing.
+    *   Contains `JComboBox` elements for user input (features and label).
+    *   Includes buttons ("Predict", "Train", "Save") to trigger core actions.
+    *   Displays model accuracy after training.
+    *   Uses `JOptionPane` for feedback messages (predictions, confirmations, errors).
+    *   Handles button click events to orchestrate the application's workflow.
+
+*   **`CSVFileProcessor`**:
+    *   Handles reading and parsing the input `application_data.csv` file.
+    *   Extracts the header row for feature names.
+    *   Parses data rows into an `ArrayList<Map<String, String>>` structure.
+    *   Generates and stores all 16 possible permutations of the four input features.
+    *   Provides methods for other classes to access the loaded data, features, and permutations.
+
+*   **`Prediction`**:
+    *   Analyzes the *entire* dataset loaded via `CSVFileProcessor`.
+    *   Calculates a frequency table (`frequencyOutcomes`) counting "Yes"/"No" outcomes for each input permutation across all data.
+    *   Generates probability rules (`permRulesPercentage`) based on the full dataset frequencies.
+    *   Provides these rules to the `GUI` for making predictions.
+    *   Serves as the base class for `Evaluate`.
+
+*   **`Evaluate`**:
+    *   Extends `Prediction` to specifically assess model accuracy.
+    *   Performs a train/test split: trains a temporary model using only the *first 150 rows*.
+    *   Generates a simple binary classifier ("Yes"/"No") based on the 150-row training rules (>=50% probability = "Yes").
+    *   Tests this classifier against the *next 50 rows* (150-199).
+    *   Compares predictions to actual labels in the test set to calculate accuracy.
+    *   Provides the calculated accuracy score to the `GUI`.
+
+*   **`Main`**: (Assuming you have one)
+    *   Contains the `main` method, the entry point of the application.
+    *   Instantiates and displays the `GUI` window.
+
 ## Installation
 
-Detailed instructions on how to install and set up the project.
-To install this project :
-pull all the files
+1.  **Prerequisites:**
+    *   Java Development Kit (JDK) installed (e.g., version 8 or higher).
+    *   An IDE like IntelliJ IDEA, Eclipse, or VS Code (optional, but recommended).
+    *   The `application_data.csv` file present in the project's root directory (or specified path).
+    *   An `images` folder containing the icon files (`predictIcon.jpg`, `trainingIcon.png`, `saveIcon.png`) in the project's root directory.
+2.  **Steps:**
+    *   Clone or download the project files from the repository.
+    *   Open the project in your IDE or compile the `.java` files using a terminal (`javac *.java`).
+    *   Run the `Main` class (or execute the compiled code: `java Main`).
 
-
-
-* **Prerequisites:**
-    * For all features to be functional, you need all the classes
-
-* **Steps:**
-    1.  pull all the files from github
-
-![Project Logo](images/img_1.png)
-
-
-![Project Logo](images/img.png)
-    2.  Run main class
-    3.  (Optional) replace "application#_data.csv" with another file
 ## Usage
 
-* Feature values can either be 'Yes' or 'No'
-* the feature Values in the GUI automatically appear as Yes,Yes,Yes,Yes.
-* The 'Predict' button outputs the chances of acceptance. Only uses the 4 feature values.
-* The 'Train' button trains the model and defines the classifier
-* The 'Save' button saves the selected feature and label values to the CSV file
+1.  Launch the application by running the `Main` class.
+2.  The GUI window will appear.
+    !GUI Screenshot <!-- Assuming img_2 shows the main GUI -->
+3.  **Train the Model:** Click the "Train" button first. This reads the `application_data.csv`, calculates prediction rules, evaluates accuracy on a subset, and displays the accuracy.
+4.  **Make a Prediction:**
+    *   Select "Yes" or "No" for the first four features ("Has Good Credit", "Has Stable Job", etc.).
+    *   Click the "Predict" button. A pop-up will show the calculated percentage chance of the loan being accepted based on the trained model.
+5.  **Save a New Entry:**
+    *   Select "Yes" or "No" for all four features.
+    *   Select the *actual known outcome* ("Yes" or "No") in the fifth dropdown ("Application Accepted").
+    *   Click the "Save" button. The entry will be appended to the `application_data.csv` file, and the model will be automatically retrained.
 
-![Project Logo](images/img_2.png)
+## Future Enhancements
 
-* Include code snippets, screenshots, or GIFs if helpful.
-* Explain any important concepts or workflows.
+If more time were available, the following improvements could be considered:
 
-
-## Prediction
-
-The CSV file is dynamically read. The values of the CSV file are put into an arraylist of maps.
-Each element in a map is a column, and each element in the arraylisst is a row. This arraylist 
-is passed to the Prediction class. In this class, a frequency table is generated from the values
-in the arraylist. This frequency table is used to generate the percentages of the likelyhood of 
-an application being accepted for each permutation. These rules are then passed to the GUI class 
-where the feature values are matched up to the permutation and the rule is retrieved and displayed.
-
-
-## Accuracy Evaluation
-
-The arrayList is passed to the Evaluate class where a frequency table is generated based off of the 
-first 150 rows and a classifer is defined to get the likelyhood of an application being accepted (Yes/No).
-From the arraylist, the next 50 rows are compared with the classifier. The number of times the classifier
-was correct / incorrect were counted, and used to calculate the accuracy of the classifier.
-
-## Saving Entry
-
-When the save button is pressed, the selected feature values and the label value are saved directly to the 
-csv file.
-
-## GUI (Graphical User Interface)
-
-The `GUI` class provides the main interactive window for the application, built using Java Swing.
-
-*   **Window Setup:** It extends `JFrame` to create the application window and uses a `FlowLayout` to arrange components simply from left to right.
-*   **User Input:** Five `JComboBox` elements allow the user to select "Yes" or "No" for the four features (HasGoodCredit, HasStableJob, HasDebt, HasCollateral) and the outcome (ApplicationIsAccepted). These are used both for making predictions and for saving new data entries.
-*   **Action Buttons:**
-    *   **Predict:** Takes the current selections from the first four combo boxes, looks up the corresponding pre-calculated prediction rule (if the model has been trained), and displays the percentage chance of acceptance in a `JOptionPane` pop-up. Requires the model to be trained first.
-    *   **Train:** Initiates the training process by creating `Prediction` and `Evaluate` objects using the data from the specified CSV file. It calculates and displays the model's accuracy on the GUI itself and shows a confirmation message via `JOptionPane`.
-    *   **Save:** Takes the current selections from all five combo boxes and appends them as a new comma-separated row to the `application_data.csv` file. This allows users to add new training examples directly through the interface. Buttons feature custom icons loaded via the `makeIcon` helper method.
-*   **Event Handling:** The class implements `ActionListener` to detect button clicks and trigger the corresponding `predict()`, `train()`, or `save()` methods.
-*   **Feedback:** `JOptionPane` dialog boxes are used extensively to provide feedback to the user, such as prediction results, training confirmation, save confirmation, and error messages   **Event Handling:** The class implements `ActionListener` to detect button clicks a
-
-## CSVFileProcessor
-
-The `CSVFileProcessor` class handles the reading and initial processing of the input CSV data file (`application_data.csv` by default).
-
-*   **File Reading:** It takes the CSV file path in its constructor and reads the file line by line.
-*   **Data Parsing:**
-    *   It extracts the header row to identify the feature names (e.g., "HasGoodCredit", "HasStableJob", etc.).
-    *   It parses each subsequent data row, splitting the comma-separated values.
-*   **Data Structure:** It stores the processed data in an `ArrayList<Map<String, String>>`. Each `Map` in the list represents a single row from the CSV, mapping feature names (keys) to their corresponding values ("Yes" or "No").
-*   **Permutation Generation:** It calculates and stores all 16 possible permutations (2^4) of the four input features ("Yes"/"No"). This permutation table is used by other classes for matching input conditions.
-*   **Data Access:** It provides getter methods (`getListCSV()`, `getFeatureValues()`, `getPermutationTable()`) for other classes (`Prediction`, `Evaluate`, `GUI`) to access the processed data, feature names, and the permutation table.
-
-## Prediction
-
-The `Prediction` class is responsible for analyzing the entire dataset loaded from the CSV file to calculate the probability of a "Yes" outcome (ApplicationIsAccepted) for each possible combination of input features.
-
-*   **Initialization:** Takes the CSV file path in its constructor and uses `CSVFileProcessor` to load the complete dataset, feature names, and the pre-generated permutation table.
-*   **Frequency Calculation:** The `generateFrequencyTable()` method iterates through every row in the loaded dataset. For each row, it matches the four feature values to one of the 16 permutations and increments the count for either "Yes" or "No" outcomes in the `frequencyOutcomes` table based on the row's "ApplicationIsAccepted" value.
-*   **Rule Generation:** The `generateRule()` method calculates the percentage chance of a "Yes" outcome for each of the 16 permutations based on the counts stored in the `frequencyOutcomes` table. These percentages are stored in the `permRulesPercentage` array.
-*   **Data Provision:** It provides getter methods (e.g., `getPermRulesPercentage()`, `getFrequencyOutcomes()`) to make the calculated frequencies and percentage rules available to other classes, primarily the `GUI` for displaying predictions.
-*   **Base Class:** It serves as the parent class for `Evaluate`, which inherits its data loading capabilities and basic structure but performs calculations on a specific subset of the data for accuracy testing.
-
-## Evaluate
-
-The `Evaluate` class extends `Prediction` and is specifically designed to assess the predictive accuracy of the model based on the provided dataset.
-
-*   **Purpose:** To determine how well the rules derived from one part of the data predict outcomes in another part.
-*   **Inheritance:** It inherits data loading and basic structure from the `Prediction` class.
-*   **Train/Test Split:** Unlike `Prediction` which uses the whole dataset, `Evaluate` performs a specific train/test split:
-    *   **Training Subset:** It calculates a separate frequency table (`testingFreqTable`) and percentage rules (`testingRulePercentage`) using only the *first 150 rows* of the dataset.
-    *   **Classifier Generation:** Based on these training rules, it creates a simple binary classifier (`testLikelyHood`) - if the percentage rule for a permutation is >= 50%, the likely outcome is "Yes", otherwise "No".
-    *   **Testing Subset:** It then tests this classifier against the *next 50 rows* (rows 150 to 199) of the dataset.
-*   **Accuracy Calculation:** The `testPredictorAccuracy()` method compares the classifier's prediction ("Yes" or "No") for each row in the testing subset against the actual "ApplicationIsAccepted" value in that row. It counts the number of correct and incorrect predictions.
-*   **Result:** It calculates the final accuracy as the percentage of correct predictions within the testing subset and stores it in `testAccuracy`.
-*   **Usage:** The `evaluateAccuracy()` method orchestrates the entire process (training on 150, testing on 50). The `getTestAccuracy()` method allows other classes, like the `GUI`, to retrieve and display the calculated accuracy score.
+*   **Improved Error Handling:** More robust handling of file not found errors, CSV parsing errors (e.g., incorrect number of columns, invalid values), and potential runtime exceptions during calculations.
+*   **Data Validation:** Add validation to ensure the loaded CSV data conforms to expectations ("Yes"/"No" values only, correct number of columns). Prevent saving if input is incomplete.
+*   **UI Enhancements:**
+    *   Use more sophisticated layout managers (like `GridBagLayout` or `BorderLayout`) for better component arrangement and resizing.
+    *   Provide clearer visual separation between prediction inputs, saving inputs, and training controls.
+    *   Display prediction results directly on the main GUI instead of only in a pop-up.
+    *   Add a status bar or log area for more detailed feedback.
+*   **Model Persistence:** Save the calculated `frequencyOutcomes` or `permRulesPercentage` to a separate file after training, so the application doesn't *always* need to retrain on startup. Add a "Load Model" button.
+*   **Input Flexibility:** Allow specifying the input CSV file path via the GUI or command-line arguments instead of hardcoding it.
+*   **More Advanced Models:** Explore slightly more complex classification algorithms if the dataset were larger or had different types of features (though this might go beyond the scope of the original assignment).
+*   **Unit Testing:** Add unit tests for the `CSVFileProcessor`, `Prediction`, and `Evaluate` classes to verify their logic independently.

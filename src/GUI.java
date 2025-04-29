@@ -261,6 +261,14 @@ public class GUI extends JFrame implements ActionListener
                     "Entry Saved",
                     JOptionPane.INFORMATION_MESSAGE
             );
+            try
+            {
+                train();
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
 
         }
         catch (IOException e)

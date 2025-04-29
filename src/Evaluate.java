@@ -14,15 +14,32 @@ public class Evaluate extends Prediction
 
     private final double[] testingRulePercentage = getPermRulesPercentage();
 
-    private String[] testLikelyHood;
+    private String[] testLikelyHood =
+            {
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    ""
+            };
 
     private double testAccuracy;
 
     public Evaluate(String file)
     {
         super(file);
-
-        testLikelyHood = new String[16];
+        data = new ArrayList<>();
 
         CSVFileProcessor fileProcessor = new CSVFileProcessor(file);
         setData(fileProcessor.getListCSV());

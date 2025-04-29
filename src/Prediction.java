@@ -54,25 +54,6 @@ public class Prediction
                     0
             };
 
-    private String[] testLikelyHood =
-            {
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    ""
-            };
 
 
     public Prediction(String file)
@@ -89,10 +70,23 @@ public class Prediction
 
     public void generateFrequencyTable()
     {
+        if (this.data == null || this.featureValues == null || this.permutationTable == null || this.frequencyOutcomes == null)
+        {
+            System.err.println("error occurred: data or permutation table or feature outcomes is null!");
+            return;
+        }
+
+
         for(int i = 0; i < data.size(); i++)
         {
 
             Map<String, String> row = data.get(i);
+
+            if(row == null)
+            {
+                System.err.println("error occurred: row is null in data");
+                continue;
+            }
 
             String[] rowScanList = new String[5];
 
@@ -134,9 +128,16 @@ public class Prediction
             for (int i = 0; i < permRulesPercentage.length; i++)
             {
                 double total = frequencyOutcomes[i][0] + frequencyOutcomes[i][1]; // get total ("Yes"s + "No"s)
-                double percentage = (frequencyOutcomes[i][0] / total) * 100; // get percentages of "Yes"s
-                permRulesPercentage[i] = percentage;
+                if(total == 0)
+                {
+                    permRulesPercentage[i] = 0.0;
 
+                }
+                else
+                {
+                    double percentage = ((double) frequencyOutcomes[i][0] / total) * 100;
+                    permRulesPercentage[i] = percentage;
+                }
             }
         }
         catch (Exception e)
@@ -224,7 +225,4 @@ public class Prediction
         return frequencyOutcomes[row][col];
     }
 
-    public String[] getTestLikelyHood() {
-        return testLikelyHood;
-    }
 }
